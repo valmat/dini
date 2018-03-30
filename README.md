@@ -149,14 +149,14 @@ void main()
     }
 
     writeln('[', cfg.get!A1("value1"),       ']'); // [A1(1)]
-    writeln('[', cfg.get!A1("value1+"),      ']'); // [A1(5)]
+    writeln('[', cfg.get!A1("value1+"),      ']'); // [A1(5)]  <- default
     writeln('[', cfg.get("value1", A1(55)),  ']'); // [A1(1)]
-    writeln('[', cfg.get("value1+", A1(55)), ']'); // [A1(55)]
+    writeln('[', cfg.get("value1+", A1(55)), ']'); // [A1(55)] <- default
 
     writeln('[', cfg.get!A2("value1"),       ']'); // [A2(1)]
-    writeln('[', cfg.get!A2("value1+"),      ']'); // [A2(7)]
+    writeln('[', cfg.get!A2("value1+"),      ']'); // [A2(7)]  <- default
     writeln('[', cfg.get("value1", A2(33)),  ']'); // [A2(1)]
-    writeln('[', cfg.get("value1+", A2(33)), ']'); // [A2(33)]
+    writeln('[', cfg.get("value1+", A2(33)), ']'); // [A2(33)] <- default
 
     //
     // Indirectly extend:

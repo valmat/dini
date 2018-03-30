@@ -167,6 +167,10 @@ void main()
     writeln("value7+ : [", cfg.get!string("value7+"), ']');
     assert(" Some text with spaces      " == cfg.get!string("value7+"));
 
+    cfg.add(`empty_str = ""`);
+    writeln("empty_str : ", [cfg.get!string("empty_str")] );
+    assert("" == cfg.get!string("empty_str") );
+
 
     writeln("value8 : [", cfg.get("value8_", 0), ']');
     assert(985642     == cfg.get("value8_", 0) );

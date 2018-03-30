@@ -4,11 +4,8 @@
 
 module iniconfigs.inivalue;
 
-import std.string : toLower;
 import std.conv   : to;
 import std.traits : isNumeric, isUnsigned;
-
-import std.stdio;
 
 struct IniValue
 {
@@ -24,7 +21,6 @@ public:
         return _value;
     }
 
-    
     T to(T)() const
         if( isConstructable!T.With!IniValue )
     {
@@ -59,6 +55,7 @@ public:
     /// Cast to a bool
     auto opCast(R : bool) () const
     {
+        import std.string : toLower;
         string v = _value.toLower();
         return ("true" == v || "1" == v || "on" == v);
     }

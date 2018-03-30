@@ -130,7 +130,7 @@ private:
     string[string] _map;
 };
 
-
+// Ini parse exception
 class IniConfigsException : Exception
 {
     this(size_t iniLine, string file = __FILE__, size_t line = __LINE__) {
@@ -249,6 +249,9 @@ unittest {
 
     assert("Some text with spaces" == cfg.get!string("value7", "value7"));
     assert(" Some text with spaces      " == cfg.get!string("value7+"));
+    cfg.add(`empty_str = ""`);
+    assert("" == cfg.get!string("empty_str") );
+
 
     assert(985642     == cfg.get("value8_", 0) );
     assert(9856428642 == cfg.get("value8", size_t(0)) );
