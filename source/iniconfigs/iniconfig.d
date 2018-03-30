@@ -143,6 +143,131 @@ class IniConfigsException : Exception
     }
 }
 
+
 // cd source 
 // rdmd -unittest -main  iniconfigs/iniconfig
-nothrow unittest {}
+unittest {
+    import std.math  : approxEqual;
+
+    string ini = `
+        value1 = 1 ;value1 comment  
+        value2 =     hello world        ;value2 comment
+
+            value3 =     1.1
+
+        value3 = 3.1415 ; value3 comment
+
+        ;value4 comment
+        value4 = 3.14159263358979361680130282241663053355296142399311
+
+        ;dfgg
+
+            ; this is a comment      
+        value5=value5
+            value6  =   value6
+        ;   dfgdfgdgd   sdfs    s       
+                    value7= Some text with spaces           
+
+                    value7+  = " Some text with spaces      "     
+
+        value8_ = 985642
+        value8=9856428642
+
+
+
+        boolval1 = on
+        boolval2 = 1
+        boolval3 = true
+
+        boolval4 = off
+        boolval5 = 0
+        boolval6 = false
+        boolval7 = any else
+    `;
+
+
+    IniConfigs cfg;
+
+    assert(cfg.empty());
+    assert(!cfg.size());
+
+    try {
+        cfg = ini;
+    } catch (IniConfigsException e) {
+        assert(0, e.msg);
+    }
+
+
+    assert(!cfg.empty());
+    assert(17 == cfg.size());
+
+    cfg.add(`
+        value9 = 15
+        value10 =  -15        
+    `);
+
+    assert(19 == cfg.size());
+
+    assert(15 == cfg.get!ubyte  ("value9"));
+    assert(15 == cfg.get!ushort ("value9"));
+    assert(15 == cfg.get!uint   ("value9"));
+    assert(15 == cfg.get!ulong  ("value9"));
+
+    assert(-15 == cfg.get!byte   ("value10"));
+    assert(-15 == cfg.get!int    ("value10"));
+    assert(-15 == cfg.get!short  ("value10"));
+    assert(-15 == cfg.get!long   ("value10"));
+    
+
+    assert( approxEqual(3.1415, cfg.get!float  ("value3")) );
+    assert( approxEqual(3.1415, cfg.get!double ("value3")) );
+    assert( approxEqual(3.1415, cfg.get!real   ("value3")) );
+
+    assert( approxEqual(3.14159263358979361680130282241663053355296142399311, cfg.get!float  ("value4"), 1e-20) );
+    assert( approxEqual(3.14159263358979361680130282241663053355296142399311, cfg.get!double ("value4"), 1e-40) );
+    assert( approxEqual(3.14159263358979361680130282241663053355296142399311, cfg.get!real   ("value4"), 1e-60) );
+
+    
+    const string name1  = "value1";
+    const string name1_ = "value1_";
+    int val1  = cfg.get(name1,  5);
+    int val1_ = cfg.get(name1_, 5);
+
+    assert(1 == val1);
+    assert(5 == val1_);
+
+    assert("hello world"   == cfg.get!string("value2",  "default value") );
+    assert("default value" == cfg.get!string("value2+", "default value") );
+
+    
+    assert("3.1415" == cfg.get!string("value3"));
+    assert(""       == cfg.get!string("value3+"));
+    
+    assert(approxEqual(3.1415, cfg.get("value3",  2.718281828459)));
+    assert(approxEqual(2.71828,cfg.get("value3+", 2.718281828459)));
+    assert(approxEqual(3.14159,cfg.get("value4",  2.718281828459)));
+
+    assert(cfg.has("value3"));
+    assert(!cfg.has("value3+"));
+
+    assert("Some text with spaces" == cfg.get!string("value7", "value7"));
+    assert(" Some text with spaces      " == cfg.get!string("value7+"));
+
+    assert(985642     == cfg.get("value8_", 0) );
+    assert(9856428642 == cfg.get("value8", size_t(0)) );
+    assert(9856428642 == cfg.get!size_t("value8", 0) );
+
+
+    assert(false == cfg.get("boolval0", false) );
+    assert(true  == cfg.get("boolval1", false) );
+    assert(true  == cfg.get("boolval2", false) );
+    assert(true  == cfg.get("boolval3", false) );
+
+    assert(false == cfg.get("boolval4", true) );
+    assert(false == cfg.get("boolval5", true) );
+    assert(false == cfg.get("boolval6", true) );
+    assert(false == cfg.get("boolval7", true) );
+
+    assert(true ==  cfg.get!bool("boolval2") );
+    assert(false == cfg.get!bool("boolval0") );
+}
