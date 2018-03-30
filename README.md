@@ -7,8 +7,8 @@ May read ini-configs content from string and form file. Support multiply adding 
 ## Example
 
 ```d
-import std.stdio : writeln, writefln, File;
-import iniconfigs.iniconfig : IniConfigs, IniConfigsException;
+import std.stdio  : writeln, writefln, File;
+import iniconfigs : IniConfigs, IniConfigsException;
 
 void main()
 {
@@ -124,10 +124,10 @@ If your castom type is constructable or assignable with `IniValue`.
 Or you can use wrapper type to indirectly extend.
 
 ```d
-import std.stdio : writeln, writefln, File;
-import iniconfigs.iniconfig : IniConfigs, IniConfigsException;
-import iniconfigs.inivalue  : IniValue;
-import std.conv : to;
+import std.stdio  : writeln, writefln, File;
+import iniconfigs : IniConfigs, IniConfigsException;
+import iniconfigs : IniValue;
+import std.conv   : to;
 
 void main()
 {
@@ -136,37 +136,37 @@ void main()
     // Constructable with IniValue
     static struct A1 {
         int a = 5;
-        this(IniValue v)
-        {
+        this(IniValue v) {
             this.a = v.toString.to!int;
         }
     }
     // Assignable with IniValue
     static struct A2 {
         int a = 7;
-        void opAssign(IniValue v)
-        {
+        void opAssign(IniValue v) {
             this.a = v.toString.to!int;
         }
     }
 
-    writeln('[', cfg.get!A1("value1"),     ']'); // [A1(1)]
-    writeln('[', cfg.get!A1("value1+"),    ']'); // [A1(5)]
-    writeln('[', cfg.get("value1", A1()),  ']'); // [A1(1)]
-    writeln('[', cfg.get("value1+", A1()), ']'); // [A1(5)]
+    writeln('[', cfg.get!A1("value1"),       ']'); // [A1(1)]
+    writeln('[', cfg.get!A1("value1+"),      ']'); // [A1(5)]
+    writeln('[', cfg.get("value1", A1(55)),  ']'); // [A1(1)]
+    writeln('[', cfg.get("value1+", A1(55)), ']'); // [A1(55)]
 
-    writeln('[', cfg.get!A2("value1"),     ']'); // [A2(1)]
-    writeln('[', cfg.get!A2("value1+"),    ']'); // [A2(7)]
-    writeln('[', cfg.get("value1", A2()),  ']'); // [A2(1)]
-    writeln('[', cfg.get("value1+", A2()), ']'); // [A2(7)]
+    writeln('[', cfg.get!A2("value1"),       ']'); // [A2(1)]
+    writeln('[', cfg.get!A2("value1+"),      ']'); // [A2(7)]
+    writeln('[', cfg.get("value1", A2(33)),  ']'); // [A2(1)]
+    writeln('[', cfg.get("value1+", A2(33)), ']'); // [A2(33)]
 
     //
     // Indirectly extend:
     //
 
+    // Suppose you can't make the structure C assignable or constructable with IniValue.
     static struct C {
         int a = 5;
     }
+    // In this case, you can write a wrapper. As shown below.
     static struct D {
         int a;
         this(IniValue v) {
@@ -175,8 +175,7 @@ void main()
         this(C c) {
             this.a = c.a;
         }
-        C castToC() const
-        {
+        C castToC() const {
             return C(this.a);
         }
         alias castToC this;

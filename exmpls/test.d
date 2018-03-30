@@ -3,7 +3,7 @@
 import std.stdio : writeln, writefln, File;
 import std.math  : approxEqual;
 
-import iniconfigs.iniconfig : IniConfigs, IniConfigsException;
+import iniconfigs : IniConfigs, IniConfigsException;
 
 
 void main()
@@ -205,7 +205,7 @@ void main()
 
     // How to extend
     {
-        import iniconfigs.inivalue : IniValue;
+        import iniconfigs : IniValue;
         import std.conv : to;
         static struct A1 {
             int a = 5;
