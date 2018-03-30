@@ -87,7 +87,8 @@ public:
             return forward!dfltValue;
         }
 
-        return cast(T) IniValue(*cfg);
+        //return cast(T) IniValue(*cfg);
+        return IniValue(*cfg).to!T;
     }
 
     /// Get ini entry
@@ -98,15 +99,9 @@ public:
         if(!cfg || null == *cfg) {
             return T.init;
         }
-
-        import std.stdio;
-        //writeln("**************");
-        //writeln("\t",[typeof(*cfg).stringof]);
-        //writeln("\t",[*cfg]);
-        //writeln("**************");
-
         
-        return cast(T) IniValue(*cfg);
+        //return cast(T) IniValue(*cfg);
+        return IniValue(*cfg).to!T;
     }
 
     /// Check if ini entry exists
@@ -144,6 +139,8 @@ class IniConfigsException : Exception
 }
 
 
+
+///////////////////////////////////////////////////////
 // cd source 
 // rdmd -unittest -main  iniconfigs/iniconfig
 unittest {

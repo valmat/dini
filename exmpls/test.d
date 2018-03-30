@@ -4,18 +4,7 @@ import std.stdio : writeln, writefln, File;
 import std.math  : approxEqual;
 
 import iniconfigs.iniconfig;
-//import iniconfigs.inivalue;
 
-/*
-
-
-struct A {
-    int   i = 5;
-    float f = 3.14;
-    alias i this;
-    alias f this;
-}
-*/
 
 void main()
 {
@@ -224,9 +213,37 @@ void main()
     assert(false == cfg.get!bool("boolval0") );
 
 
+    
+
+    writeln('[', cfg.get!A1("value1"), ']');
+    writeln('[', cfg.get!A1("value1+"), ']');
+    writeln('[', cfg.get("value1", A1()), ']');
+    writeln('[', cfg.get("value1+", A1()), ']');
+
+    //writeln('[', cfg.get!A2("value1"), ']');
+    //writeln('[', cfg.get!A2("value1+"), ']');
+    //writeln('[', cfg.get("value1", A2()), ']');
+    //writeln('[', cfg.get("value1+", A2()), ']');
 
      //writeln('[', cfg.get("value1",  A()).get().a, ']');
     //writeln('[', cfg.get("value1+", A()).get().a, ']');
 
 
+}
+
+import iniconfigs.inivalue;
+import std.conv : to;
+struct A1 {
+    int a = 5;
+    this(IniValue v)
+    {
+        this.a = v.toString.to!int;
+    }
+}
+struct A2 {
+    int a =75;
+    void opAssign(IniValue v)
+    {
+        this.a = v.toString.to!int;
+    }
 }
