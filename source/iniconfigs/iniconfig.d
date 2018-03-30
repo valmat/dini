@@ -4,35 +4,14 @@
 
 module iniconfigs.iniconfig;
 
-/*
-import std.range      : empty, popFront, front;
-import std.traits     : isIterable;
-import std.typecons   : Tuple, tuple, isTuple;
-import std.meta       : staticMap;
-*/
-import std.algorithm.iteration: splitter;
-import std.algorithm.iteration: joiner;
-import std.range : enumerate;
-//import std.array: array;
-import std.string: indexOf, strip;
-
+import std.algorithm  : splitter, joiner;
+import std.range      : enumerate;
+import std.string     : indexOf, strip;
 import std.functional : forward;
-
-import std.stdio : writeln, File;
-
-import std.conv : to;
+import std.stdio      : File;
+import std.conv       : to;
 
 import iniconfigs.inivalue;
-
-
-
-class IniConfigsException : Exception
-{
-    
-    this(size_t iniLine, string file = __FILE__, size_t line = __LINE__) {
-        super("IniConfigs: syntax error in line: " ~ iniLine.to!string, file, line);
-    }
-}
 
 struct IniConfigs
 {
@@ -82,6 +61,10 @@ public:
             if( npos > pos ) {
                 string key   = line[  0 .. pos  ].strip();
                 string value = line[ pos+1 .. $ ].strip();
+                if(value.length > 1 && '"' == value[0] && '"' == value[$-1]) {
+                    value = value[1..$-1];
+                }
+
                 _map[key] = value;
             } else {
                 throw new IniConfigsException(lineNum);
@@ -103,8 +86,7 @@ public:
         if(noEmpty && null == *cfg) {
             return forward!dfltValue;
         }
-        
-        //return cast(T) IniValue!string(*cfg);
+
         return cast(T) IniValue(*cfg);
     }
 
@@ -116,8 +98,14 @@ public:
         if(!cfg || null == *cfg) {
             return T.init;
         }
+
+        import std.stdio;
+        //writeln("**************");
+        //writeln("\t",[typeof(*cfg).stringof]);
+        //writeln("\t",[*cfg]);
+        //writeln("**************");
+
         
-        //return cast(T) IniValue!string(*cfg);
         return cast(T) IniValue(*cfg);
     }
 
@@ -148,6 +136,12 @@ private:
 };
 
 
+class IniConfigsException : Exception
+{
+    this(size_t iniLine, string file = __FILE__, size_t line = __LINE__) {
+        super("IniConfigs: syntax error in line: " ~ iniLine.to!string, file, line);
+    }
+}
 
 // cd source 
 // rdmd -unittest -main  iniconfigs/iniconfig
