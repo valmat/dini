@@ -65,85 +65,87 @@ public:
     /// add content
     void add(string content)
     {
-        writeln( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
-        
         size_t npos = size_t(-1);
-        writeln( [npos] );
-        writeln( "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" );
-
 
         foreach(lineNum, ref line; content.splitter("\n").enumerate(1)) {
-
             size_t pos = line.indexOf(';');
             
-            writeln( [pos] );
-
-            // remove comment
-            if( npos > pos ) {
-                line = line[0..pos];
-            }
-            // trim
-            line = line.strip();
+            // remove comment & trim
+            line = ( npos > pos ) ? line = line[0..pos].strip() : line.strip();
 
             if( null == line ) {
                 continue;
             }
-
-            writeln( [line], [lineNum] );
-
 
             // parse key and value
             pos = line.indexOf('=');
             if( npos > pos ) {
                 string key   = line[  0 .. pos  ].strip();
                 string value = line[ pos+1 .. $ ].strip();
-                writeln( [key, value] );
-
                 _map[key] = value;
-
             } else {
                 throw new IniConfigsException(lineNum);
             }
         }
     }
 
-nothrow:
+//nothrow:
 
     /// Get ini entry
-    template get(T){
-    IniValue!T get(auto ref string key, auto ref T dfltValue, bool noEmpty = true) const
+    T get(T)(const string key, auto ref T dfltValue, bool noEmpty = true) const
     {
-        auto cfg = forwrd!key in _map;
+        const string* cfg = (forward!key in _map);
+
         // if key not exists
-        if(!cfg) {
-            return IniValue!T(forwrd!dfltValue);
+        if(cfg is null) {
+            return forward!dfltValue;
         }
 
         // check if config value string is empty
         if(noEmpty && null == *cfg) {
-            return IniValue!T(forwrd!dfltValue);
+            return forward!dfltValue;
         }
         
-        return IniValue!string(*cfg);
-    }}
+        //return cast(T) IniValue!string(*cfg);
+        return cast(T) IniValue(*cfg);
+    }
+/*
+    T get(T)(auto ref string key, auto ref T dfltValue, bool noEmpty = true) const
+    {
+        const string* cfg = (forward!key in _map);
+
+        // if key not exists
+        if(cfg is null) {
+            return forward!dfltValue;
+        }
+
+        // check if config value string is empty
+        if(noEmpty && null == *cfg) {
+            return forward!dfltValue;
+        }
+        
+        //return cast(T) IniValue!string(*cfg);
+        return cast(T) IniValue(*cfg);
+    }
+    */
 
     /// Get ini entry
-    template get(T){
-    IniValue!T get(auto ref string key) const
+    T get(T)(auto ref string key) const
     {
-        auto cfg = forwrd!key in _map;
+        const string* cfg = forward!key in _map;
         // if key not exists or config value string is empty return default
         if(!cfg || null == *cfg) {
-            return IniValue!T(T.init);
+            return T.init;
         }
         
-        return IniValue!string(*cfg);
-    }}
+        //return cast(T) IniValue!string(*cfg);
+        return cast(T) IniValue(*cfg);
+    }
 
     /// Check if ini entry exists
     bool has()(auto ref string key) const
     {
-        return key in _map;
+        return (key in _map) !is null;
     }
 
     /// Check if ini configs has not entries
