@@ -212,7 +212,7 @@ void main()
     writeln("boolval0 : [", cfg.get!bool("boolval0"), ']');
     assert(false == cfg.get!bool("boolval0") );
 
-
+    // How to extend
     {
         import iniconfigs.inivalue : IniValue;
         import std.conv : to;
@@ -248,5 +248,53 @@ void main()
         assert( 1 == cfg.get("value1", A2()).a );
         writeln('[', cfg.get("value1+", A2()), ']');
         assert( 7 == cfg.get("value1+", A2()).a );
+
+        //
+        // Indirectly passing:
+        //
+        static struct C {
+            int a = 5;
+        }
+        static struct D {
+            int a;
+            this(IniValue v)
+            {
+                this.a = v.toString.to!int;
+            }
+            this(C c)
+            {
+                this.a = c.a;
+            }
+            C castToC() const
+            {
+                return C(this.a);
+            }
+            alias castToC this;
+        }
+        static struct E {
+            int a;
+            this(IniValue v)
+            {
+                this.a = v.toString.to!int;
+            }
+            C castToC() const
+            {
+                return C(this.a);
+            }
+            alias castToC this;
+        }
+
+        C c1 = cfg.get!D("value1");
+        C c2 = cfg.get!E("value1");
+        C c3 = cfg.get("value1+", cast(D) C(3));
+
+        writeln('[', c1, ']');
+        assert( 1 == c1.a );
+        writeln('[', c2, ']');
+        assert( 1 == c2.a );
+        writeln('[', c3, ']');
+        assert( 3 == c3.a );
+
+
     }
 }
