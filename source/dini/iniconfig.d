@@ -2,7 +2,7 @@
 // 
 // 
 
-module iniconfigs.iniconfig;
+module dini.iniconfig;
 
 import std.algorithm  : splitter, joiner;
 import std.range      : enumerate;
@@ -11,7 +11,7 @@ import std.functional : forward;
 import std.stdio      : File;
 import std.conv       : to;
 
-import iniconfigs.inivalue;
+import dini.inivalue;
 
 struct IniConfigs
 {
@@ -142,7 +142,7 @@ class IniConfigsException : Exception
 
 ///////////////////////////////////////////////////////
 // cd source 
-// rdmd -unittest -main  iniconfigs/iniconfig
+// rdmd -unittest -main  dini/iniconfig
 unittest {
     import std.math  : approxEqual;
 
@@ -275,7 +275,7 @@ unittest {
 
 unittest {
     
-    import iniconfigs.inivalue : IniValue;
+    import dini.inivalue : IniValue;
     import std.conv : to;
 
     IniConfigs cfg = "value1 = 1";

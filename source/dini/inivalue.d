@@ -2,7 +2,7 @@
 // 
 // 
 
-module iniconfigs.inivalue;
+module dini.inivalue;
 
 import std.conv   : to;
 import std.traits : isNumeric, isUnsigned;
@@ -82,7 +82,7 @@ private template isAssignable(T) {
 
 ///////////////////////////////////////////////////////
 // cd source 
-// rdmd -unittest -main  iniconfigs/inivalue
+// rdmd -unittest -main  dini/inivalue
 nothrow unittest {
 
     struct B1 {
