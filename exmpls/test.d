@@ -213,37 +213,40 @@ void main()
     assert(false == cfg.get!bool("boolval0") );
 
 
-    
-
-    writeln('[', cfg.get!A1("value1"), ']');
-    writeln('[', cfg.get!A1("value1+"), ']');
-    writeln('[', cfg.get("value1", A1()), ']');
-    writeln('[', cfg.get("value1+", A1()), ']');
-
-    //writeln('[', cfg.get!A2("value1"), ']');
-    //writeln('[', cfg.get!A2("value1+"), ']');
-    //writeln('[', cfg.get("value1", A2()), ']');
-    //writeln('[', cfg.get("value1+", A2()), ']');
-
-     //writeln('[', cfg.get("value1",  A()).get().a, ']');
-    //writeln('[', cfg.get("value1+", A()).get().a, ']');
-
-
-}
-
-import iniconfigs.inivalue;
-import std.conv : to;
-struct A1 {
-    int a = 5;
-    this(IniValue v)
     {
-        this.a = v.toString.to!int;
-    }
-}
-struct A2 {
-    int a =75;
-    void opAssign(IniValue v)
-    {
-        this.a = v.toString.to!int;
+        import iniconfigs.inivalue : IniValue;
+        import std.conv : to;
+        static struct A1 {
+            int a = 5;
+            this(IniValue v)
+            {
+                this.a = v.toString.to!int;
+            }
+        }
+        static struct A2 {
+            int a = 7;
+            void opAssign(IniValue v)
+            {
+                this.a = v.toString.to!int;
+            }
+        }
+
+        writeln('[', cfg.get!A1("value1"), ']');
+        assert( 1 == cfg.get!A1("value1").a );
+        writeln('[', cfg.get!A1("value1+"), ']');
+        assert( 5 == cfg.get!A1("value1+").a );
+        writeln('[', cfg.get("value1", A1()), ']');
+        assert( 1 == cfg.get("value1", A1()).a );
+        writeln('[', cfg.get("value1+", A1()), ']');
+        assert( 5 == cfg.get("value1+", A1()).a );
+
+        writeln('[', cfg.get!A2("value1"), ']');
+        assert( 1 == cfg.get!A2("value1").a );
+        writeln('[', cfg.get!A2("value1+"), ']');
+        assert( 7 == cfg.get!A2("value1+").a );
+        writeln('[', cfg.get("value1", A2()), ']');
+        assert( 1 == cfg.get("value1", A2()).a );
+        writeln('[', cfg.get("value1+", A2()), ']');
+        assert( 7 == cfg.get("value1+", A2()).a );
     }
 }

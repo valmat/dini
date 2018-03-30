@@ -268,3 +268,37 @@ unittest {
     assert(true ==  cfg.get!bool("boolval2") );
     assert(false == cfg.get!bool("boolval0") );
 }
+
+
+unittest {
+    
+    import iniconfigs.inivalue : IniValue;
+    import std.conv : to;
+
+    IniConfigs cfg = "value1 = 1";
+
+    static struct A1 {
+        int a = 5;
+        this(IniValue v)
+        {
+            this.a = v.toString.to!int;
+        }
+    }
+    static struct A2 {
+        int a = 7;
+        void opAssign(IniValue v)
+        {
+            this.a = v.toString.to!int;
+        }
+    }
+
+    assert( 1 == cfg.get!A1("value1").a );
+    assert( 5 == cfg.get!A1("value1+").a );
+    assert( 1 == cfg.get("value1", A1()).a );
+    assert( 5 == cfg.get("value1+", A1()).a );
+
+    assert( 1 == cfg.get!A2("value1").a );
+    assert( 7 == cfg.get!A2("value1+").a );
+    assert( 1 == cfg.get("value1", A2()).a );
+    assert( 7 == cfg.get("value1+", A2()).a );
+}

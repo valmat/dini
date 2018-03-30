@@ -26,55 +26,22 @@ public:
 
     
     T to(T)() const
-        if( __traits(compiles, typeof(T(IniValue.init)) ) )
+        if( isConstructable!T.With!IniValue )
     {
-        //T t;
-        //t = this;
-        //T(this)
         return T(this);
     }
-
     T to(T)() const
-        if( !__traits(compiles, typeof(T(IniValue.init)) ) )
+        if( !isConstructable!T.With!IniValue && isAssignable!T.With!IniValue )
+    {
+        T t;
+        t = this;
+        return t;
+    }
+    T to(T)() const
+        if( !isConstructable!T.With!IniValue && !isAssignable!T.With!IniValue )
     {
         return cast(T) this;
     }
-    
-
-
-    /*
-    static if( __traits(compiles, T(IniValue.init) ) ) {
-        pragma(msg, __traits(compiles, T(IniValue.init) ) );
-        pragma(msg, __traits(compiles, T(IniValue.init) ) );
-
-        T to(T)() const
-        {
-            return T(this);
-        }
-    } else {
-        T to(T)() const
-        {
-            return cast(T) this;
-        }
-    }
-    */
-
-
-
-    /*
-    writeln(__traits(compiles));                      // false
-    writeln(__traits(compiles, foo));                 // true
-    writeln(__traits(compiles, foo + 1));             // true
-    writeln(__traits(compiles, &foo + 1));            // false
-    writeln(__traits(compiles, typeof(1)));           // true
-    writeln(__traits(compiles, S.s1));                // true
-    writeln(__traits(compiles, S.s3));                // false
-    writeln(__traits(compiles, 1,2,3,int,long,std));  // true
-    writeln(__traits(compiles, 3[1]));                // false
-    writeln(__traits(compiles, 1,2,3,int,long,3[1])); // false
-    */
-
-    
 
     /// Cast to a string
     string opCast(R : string)() const
@@ -100,22 +67,47 @@ private:
     string _value;
 };
 
-/*
-private {
-opAssign(IniValue v)
 
-
-    bool enum isConstructableWith
-    opAssign(IniValue v)
-
-        T to(T)() const
-            if( !__traits(compiles, typeof(T(IniValue.init)) ) )
-        {
-            return cast(T) this;
-        }
+private template isConstructable(T) {
+    template With(R) {
+        enum bool With = __traits(compiles, typeof(T(R.init)) );
+    }
 }
-*/
 
+private template isAssignable(T) {
+    template With(R) {
+        enum bool With = __traits(compiles, typeof(T.init.opAssign(R.init)) );
+    }
+}
+
+
+
+
+///////////////////////////////////////////////////////
 // cd source 
 // rdmd -unittest -main  iniconfigs/inivalue
-nothrow unittest {}
+nothrow unittest {
+
+    struct B1 {
+        this(IniValue v) {}
+    }
+    struct B2 {
+        void opAssign(IniValue v) {}
+    }
+
+    //pragma(msg,  "isConstructable!B1.With!IniValue");
+    //pragma(msg,  isConstructable!B1.With!IniValue);
+    static assert(isConstructable!B1.With!IniValue);
+
+    //pragma(msg,  "isConstructable!B2.With!IniValue");
+    //pragma(msg,  isConstructable!B2.With!IniValue);
+    static assert(!isConstructable!B2.With!IniValue);
+
+    //pragma(msg,  "isAssignable!B1.With!IniValue");
+    //pragma(msg,  isAssignable!B1.With!IniValue);
+    static assert(!isAssignable!B1.With!IniValue);
+
+    //pragma(msg,  "isAssignable!B2.With!IniValue");
+    //pragma(msg,  isAssignable!B2.With!IniValue);
+    static assert(isAssignable!B2.With!IniValue);
+}
