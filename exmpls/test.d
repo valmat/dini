@@ -3,7 +3,7 @@
 import std.stdio : writeln, writefln, File;
 import std.math  : approxEqual;
 
-import iniconfigs.iniconfig;
+import iniconfigs.iniconfig : IniConfigs, IniConfigsException;
 
 
 void main()
@@ -79,7 +79,6 @@ void main()
     writeln("Ini entries number:  ",  cfg.size());
     assert(21 == cfg.size());
 
-    //uint64_t, uint32_t, uint16_t, uint8_t, int64_t, int32_t, int16_t, int8_t
 
     writeln( " 15 (ubyte)  == ", cfg.get!ubyte  ("value9") );
     assert(15 == cfg.get!ubyte  ("value9"));
@@ -103,10 +102,6 @@ void main()
     //writeln( " -15 (cent)   == ", cfg.get!cent   ("value10") );
     
 
-
-//import std.conv   : to;
-//writeln( "-15".to!byte );
-
     writefln("value3 : %.5f", cfg.get!float  ("value3") );
     assert( approxEqual(3.1415, cfg.get!float  ("value3")) );
     writefln("value3 : %.5f", cfg.get!double ("value3") );
@@ -120,8 +115,6 @@ void main()
     assert( approxEqual(3.14159263358979361680130282241663053355296142399311, cfg.get!double ("value4"), 1e-40) );
     writefln("value4 : %.61f", cfg.get!real   ("value4") );
     assert( approxEqual(3.14159263358979361680130282241663053355296142399311, cfg.get!real   ("value4"), 1e-60) );
-
-    //assert(-15 == cfg.get!long   ("value10"));
 
     
     const string name1  = "value1";
@@ -181,8 +174,6 @@ void main()
     assert(9856428642 == cfg.get("value8", size_t(0)) );
     writeln("value8 : [", cfg.get!size_t("value8", 0), ']');
     assert(9856428642 == cfg.get!size_t("value8", 0) );
-
-
 
 
     writeln("boolval0 : [", cfg.get("boolval0", false), ']');
