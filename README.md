@@ -1,6 +1,6 @@
 # Dlang ini-configs
 
-[![Dub version](https://img.shields.io/dub/v/vest-dini.svg)](https://code.dlang.org/packages/dini/~master)
+[![Dub version](https://img.shields.io/dub/v/vest-dini.svg)](https://code.dlang.org/packages/vest-dini/~master)
 [![License](https://img.shields.io/dub/l/vest-dini.svg)](https://code.dlang.org/packages/vest-dini/)
 [![Build Status](https://travis-ci.org/valmat/dini.svg?branch=master)](https://travis-ci.org/valmat/dini)
 [![Tests coverage](https://codecov.io/gh/valmat/dini/branch/master/graph/badge.svg)](https://codecov.io/github/valmat/dini)
@@ -11,7 +11,7 @@ May read ini-configs content from string and form file. Support multiply adding 
 
 ## Example
 
-```d
+```D
 import std.stdio  : writeln, writefln, File;
 import iniconfigs : IniConfigs, IniConfigsException;
 
@@ -128,7 +128,7 @@ If your castom type is constructable or assignable with `IniValue`.
 
 Or you can use wrapper type to indirectly extend.
 
-```d
+```D
 import std.stdio  : writeln, writefln, File;
 import iniconfigs : IniConfigs, IniConfigsException;
 import iniconfigs : IniValue;
