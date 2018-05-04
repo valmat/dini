@@ -75,16 +75,16 @@ public:
     /// Get ini entry
     T get(T)(const string key, auto ref T dfltValue, bool noEmpty = true) const
     {
-        const string* cfg = (forward!key in _map);
+        const string* cfg = (key in _map);
 
         // if key not exists
         if(cfg is null) {
-            return forward!dfltValue;
+            return dfltValue;
         }
 
         // check if config value string is empty
         if(noEmpty && null == *cfg) {
-            return forward!dfltValue;
+            return dfltValue;
         }
 
         //return cast(T) IniValue(*cfg);
@@ -94,7 +94,8 @@ public:
     /// Get ini entry
     T get(T)(auto ref string key) const
     {
-        const string* cfg = forward!key in _map;
+        const string* cfg = (key in _map);
+
         // if key not exists or config value string is empty return default
         if(!cfg || null == *cfg) {
             return T.init;
