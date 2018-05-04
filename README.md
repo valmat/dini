@@ -1,7 +1,7 @@
 # Dlang ini-configs
 
-[![Dub version](https://img.shields.io/dub/v/dini.svg)](https://code.dlang.org/packages/dini/~master)
-[![License](https://img.shields.io/dub/l/dini.svg)](https://code.dlang.org/packages/dini/)
+[![Dub version](https://img.shields.io/dub/v/vest-dini.svg)](https://code.dlang.org/packages/dini/~master)
+[![License](https://img.shields.io/dub/l/vest-dini.svg)](https://code.dlang.org/packages/vest-dini/)
 [![Build Status](https://travis-ci.org/valmat/dini.svg?branch=master)](https://travis-ci.org/valmat/dini)
 [![Tests coverage](https://codecov.io/gh/valmat/dini/branch/master/graph/badge.svg)](https://codecov.io/github/valmat/dini)
 

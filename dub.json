@@ -1,5 +1,5 @@
 {
-    "name": "dini",
+    "name": "vest-dini",
     "description": " Dlang ini-configs",
     "targetType": "library",
     "authors": ["Valmat"],
