@@ -1,0 +1,4 @@
+.dub/*
+dini-test-library
+*.lst
+*.txt

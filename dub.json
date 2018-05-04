@@ -1,0 +1,8 @@
+{
+    "name": "dini",
+    "description": " Dlang ini-configs",
+    "targetType": "library",
+    "authors": ["Valmat"],
+    "homepage": "https://github.com/valmat/dini",
+    "license": "MIT"
+}
