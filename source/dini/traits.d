@@ -24,7 +24,7 @@ private:
 
 public:
 
-    void init(string ini_filename) 
+    void init(string ini_filename)
     {   
         try {
             _ini.add(File(ini_filename));
@@ -32,9 +32,13 @@ public:
             throw new IniConfigsException(e.msg);
         }
     }
-    void init(File ini_file) 
+    void init(File ini_file)
     {   
         _ini.add(ini_file);
+    }
+    void initSrc(string src) pure
+    {   
+        _ini.add(src);
     }
 
 
