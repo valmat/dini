@@ -15,7 +15,6 @@ mixin template setField(string fname)
     mixin( `auto ` ~ fname ~ `() const {return _ini.get("` ~ fname ~ `", dflt.` ~ fname ~ `);}` );
 }
 
-
 struct ConfigsTrait(ConfigsDefault)
 {
 private:
@@ -44,7 +43,39 @@ public:
 
     // Automatically generates getters by fields of structure ConfigsDefault
     static foreach(enum string mmbr_name; __traits(allMembers, ConfigsDefault)) {
-        //pragma(msg, mmbr_name);
         mixin setField!mmbr_name;
     }
+}
+
+
+///////////////////////////////////////////////////////
+// cd source 
+// rdmd -unittest -main  dini/traits
+unittest {
+    string ini = `
+        value1 = Some text           
+        value2 = 9856428642
+    `;
+
+    static struct AppConfigsDefault
+    {
+        enum string value1 = "Ultimate Question of Life, the Universe, and Everything";
+        enum size_t value2 = 42;
+    }
+    alias AppConfigs = ConfigsTrait!AppConfigsDefault;
+
+
+    AppConfigs cfg;
+    assert(cfg.value1 == AppConfigsDefault.value1);
+    assert(cfg.value2 == AppConfigsDefault.value2);
+
+
+    try {
+        cfg.initSrc (ini);
+    } catch (IniConfigsException e) {
+        assert(0);
+    }
+
+    assert(cfg.value1 == "Some text");
+    assert(cfg.value2 == 9856428642);
 }

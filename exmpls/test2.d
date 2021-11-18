@@ -1,10 +1,8 @@
 #!/usr/bin/rdmd --shebang=-I../source -I.
 
-import std.stdio : writeln, writefln, stderr, File;
-//import std.math  : approxEqual;
-import std.typecons  : tuple;
-
-import dini      : IniConfigs, IniConfigsException, ConfigsTrait;
+import std.stdio    : writeln, stderr;
+import std.typecons : tuple;
+import dini         : IniConfigs, IniConfigsException, ConfigsTrait;
 
 
 struct AppConfigsDefault
