@@ -134,8 +134,13 @@ private:
 // Ini parse exception
 class IniConfigsException : Exception
 {
-    this(size_t iniLine, string file = __FILE__, size_t line = __LINE__) {
+    this(size_t iniLine, string file = __FILE__, size_t line = __LINE__)
+    {
         super("IniConfigs: syntax error in line: " ~ iniLine.to!string, file, line);
+    }
+    this(string msg)
+    {
+        super(msg);
     }
 }
 

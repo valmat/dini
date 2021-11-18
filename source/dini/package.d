@@ -2,6 +2,7 @@ module dini;
 
 public import dini.iniconfig;
 public import dini.inivalue;
+public import dini.traits;
 
 
 // test:
