@@ -32,6 +32,10 @@ public:
             throw new IniConfigsException(e.msg);
         }
     }
+    void init(File ini_file) 
+    {   
+        _ini.add(ini_file);
+    }
 
 
     // Automatically generates getters by fields of structure ConfigsDefault

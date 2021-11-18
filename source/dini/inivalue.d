@@ -11,12 +11,12 @@ struct IniValue
 {
 public:
     /// Constructor
-    this(string value) 
+    this(string value) nothrow @nogc pure @safe
     {
         this._value = value;
     }
 
-    string toString() const
+    string toString() const nothrow @nogc pure @safe
     {
         return _value;
     }
@@ -40,20 +40,20 @@ public:
     }
 
     /// Cast to a string
-    string opCast(R : string)() const
+    string opCast(R : string)() const @nogc pure @safe
     {
         return _value;
     }
 
     /// Casting to integer and float types
-    auto opCast(R)() const
+    auto opCast(R)() const pure @safe
         if(isNumeric!R || isUnsigned!R)
     {
         return _value.to!R;
     }
 
     /// Cast to a bool
-    auto opCast(R : bool) () const
+    auto opCast(R : bool) () const pure @safe
     {
         import std.string : toLower;
         string v = _value.toLower();

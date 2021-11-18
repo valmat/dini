@@ -17,7 +17,7 @@ struct IniConfigs
 {
 public:
     /// Constructors
-    this(string content)
+    this(string content) pure
     {
         this.add(content);
     }
@@ -27,7 +27,7 @@ public:
     }
 
     /// assignment
-    void opAssign(string content)
+    void opAssign(string content) pure
     {
         this.add(content);
     }
@@ -42,7 +42,7 @@ public:
         this.add(file.byLine().joiner("\n").to!string);
     }
     /// add content
-    void add(string content)
+    void add(string content) pure
     {
         size_t npos = size_t(-1);
 
@@ -106,23 +106,23 @@ public:
     }
 
     /// Check if ini entry exists
-    bool has()(auto ref string key) const
+    bool has()(auto ref string key) const @safe
     {
         return (key in _map) !is null;
     }
 
     /// Check if ini configs has not entries
-    bool empty() const
+    bool empty() const @nogc pure @safe
     {
         return !_map.length;
     }
 
     /// Returns counts of ini entries
-    size_t size() const
+    size_t size() const @nogc pure @safe
     {
         return _map.length;
     }
-    size_t length() const
+    size_t length() const @nogc pure @safe
     {
         return _map.length;
     }
@@ -134,11 +134,11 @@ private:
 // Ini parse exception
 class IniConfigsException : Exception
 {
-    this(size_t iniLine, string file = __FILE__, size_t line = __LINE__)
+    this(size_t iniLine, string file = __FILE__, size_t line = __LINE__) pure @safe
     {
         super("IniConfigs: syntax error in line: " ~ iniLine.to!string, file, line);
     }
-    this(string msg)
+    this(string msg) pure @safe
     {
         super(msg);
     }
