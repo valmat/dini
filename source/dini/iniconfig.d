@@ -106,25 +106,30 @@ public:
     }
 
     /// Check if ini entry exists
-    bool has()(auto ref string key) const @safe
+    bool has()(auto ref string key) const @safe nothrow
     {
         return (key in _map) !is null;
     }
 
     /// Check if ini configs has not entries
-    bool empty() const @nogc pure @safe
+    bool empty() const @nogc pure @safe nothrow
     {
         return !_map.length;
     }
 
     /// Returns counts of ini entries
-    size_t size() const @nogc pure @safe
+    size_t size() const @nogc pure @safe nothrow
     {
         return _map.length;
     }
-    size_t length() const @nogc pure @safe
+    size_t length() const @nogc pure @safe nothrow
     {
         return _map.length;
+    }
+
+    string[] keys() const pure @safe nothrow
+    {
+        return _map.keys();
     }
 
 private:
